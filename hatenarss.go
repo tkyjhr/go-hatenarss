@@ -164,6 +164,10 @@ func Get(category FeedCategory, client *http.Client) (*Feed, error) {
 	if err != nil {
 		return nil, err
 	}
+	defer resp.Body.Close()
+	if resp.StatusCode != http.StatusOK {
+		return nil, fmt.Errorf("resp.StatusCode != http.StatusOK : %v", resp.Status)
+	}
 	data, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
 		return nil, err
